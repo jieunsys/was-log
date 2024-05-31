@@ -56,8 +56,12 @@ public class TailThread implements Runnable {
 					file.seek(filePointer);
 					String line = file.readLine();
 					while(line!=null) {
+						line = new String(line.getBytes("ISO-8859-1"), "UTF-8");
 						this.fireNewLogFileLine(line);
 						line = file.readLine();
+						if(line!=null) {
+							line = new String(line.getBytes("ISO-8859-1"), "UTF-8");
+						}
 					}
 					filePointer = file.getFilePointer();
 				}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>webtail1</title>
+</head>
+<body>
+	<form name="publish">
+		<input type="text" name="message">
+		<input type="submit" value="전송">
+	</form>
+	<div id="div1"></div>
+</body>
+</html>
+
+<script type="text/javascript">
+	let socket = new WebSocket("ws://localhost:8070/webtail1");
+	
+	document.forms.publish.onsubmit = function() {
+		let outgoingMessage = this.message.value;
+		
+		socket.send(outgoingMessage);
+		return false;
+	};
+	
+	socket.onmessage = function(event){
+		let message = event.data;
+		
+		let messageElem = document.createElement('div');
+		messageElem.textContent = message;
+		document.getElementById('div1').append(messageElem);
+		document.getElementById('div1').scrollIntoView({block:"end"});
+	}
+</script>
+
